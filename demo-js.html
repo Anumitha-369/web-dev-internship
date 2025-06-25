@@ -1,0 +1,25 @@
+
+
+
+
+<form onsubmit="submitForm(event)">
+
+<label>Enter your name :</label>  <input type="text" placeholder="Enter your name" title="Enter your name" id="name"/><br><br>
+<label> Password : </label> <input type="password" placeholder="Enter your password" title="Enter your password" /> <br><br>
+<label>Email: </label> <input type="email" placeholder="Enter your email" title="Enter your email" /><br><br>
+<label>Phone Number: </label> <input type="tel" placeholder="Enter your phone number" title="Enter your phone number" /><br><br>
+<input type="submit" value="login" />
+
+<p id ="id-name"></p>    <!-- to use store the names got from the form in this "name" id -->
+
+</form>
+
+<script>
+function submitForm(event) {
+    event.preventDefault();   //used for retaing the text to display than blinking and leaving
+	const names = document.getElementById("name").value;
+	document.getElementById("id-name").textContent = "Welcome to js learning " + names + "!";
+}
+</script>
+
+

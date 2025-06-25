@@ -1,0 +1,11 @@
+main div
+sub div --- 3 ---width:33%
+unedr main div : give 
+{width : 100%
+height:90vh
+display : flex;
+justify-content: space-between;
+}
+
+
+cdn fontawesome (search in browser )--for link in font awesome to connect lim=nk in <head>
