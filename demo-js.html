@@ -1,13 +1,11 @@
 
 
-
-
 <form onsubmit="submitForm(event)">
 
 <label>Enter your name :</label>  <input type="text" placeholder="Enter your name" title="Enter your name" id="name"/><br><br>
-<label> Password : </label> <input type="password" placeholder="Enter your password" title="Enter your password" /> <br><br>
-<label>Email: </label> <input type="email" placeholder="Enter your email" title="Enter your email" /><br><br>
-<label>Phone Number: </label> <input type="tel" placeholder="Enter your phone number" title="Enter your phone number" /><br><br>
+<label> Password : </label> <input type="password" placeholder="Enter your password" title="Enter your password" id="password" /> <br><br>
+<label>Email: </label> <input type="email" placeholder="Enter your email" title="Enter your email" id="email" /><br><br>
+<label>Phone Number: </label> <input type="number" placeholder="Enter your phone number" title="Enter your phone number" id="phone" /><br><br>
 <input type="submit" value="login" />
 
 <p id ="id-name"></p>    <!-- to use store the names got from the form in this "name" id -->
@@ -16,10 +14,48 @@
 
 <script>
 function submitForm(event) {
-    event.preventDefault();   //used for retaing the text to display than blinking and leaving
-	const names = document.getElementById("name").value;
-	document.getElementById("id-name").textContent = "Welcome to js learning " + names + "!";
+    event.preventDefault();
+
+    const fields = [
+        { id: "name",    value: document.getElementById("name").value.trim(),    errorId: "name-error",    validate: v => v && /^[A-Za-z ]{3,}$/.test(v),    message: " Name is required and must be at least 3 letters." },
+        { id: "password",value: document.getElementById("password").value,       errorId: "password-error",validate: v => v.length >= 6,                    message: " Password must be at least 6 characters." },
+        { id: "email",   value: document.getElementById("email").value.trim(),   errorId: "email-error",   validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), message: " Enter a valid email." },
+        { id: "phone",   value: document.getElementById("phone").value.trim(),   errorId: "phone-error",   validate: v => /^\d{10}$/.test(v),               message: " Enter a valid 10-digit phone number." }
+    ];
+
+    let hasError = false;
+
+    fields.forEach(f => {
+        let span = document.getElementById(f.errorId);
+        if (!span) {
+            span = document.createElement("span");
+            span.id = f.errorId;
+            span.style.color = "red";
+            // Insert the error span after the corresponding input's nextSibling (which is <br>)
+            const inputElem = document.getElementById(f.id);
+            let refNode = inputElem.nextSibling;
+            // Skip text nodes to find the <br> after the input
+            while (refNode && refNode.nodeType !== 1 && refNode.nodeName !== "BR") {
+                refNode = refNode.nextSibling;
+            }
+            if (refNode && refNode.nodeName === "BR") {
+                refNode.parentNode.insertBefore(span, refNode.nextSibling);
+            } else {
+                inputElem.parentNode.insertBefore(span, inputElem.nextSibling);
+            }
+        }
+        if (!f.validate(f.value)) {
+            span.textContent = f.message;
+            hasError = true;
+        } else {
+            span.textContent = "";
+        }
+    });
+
+    if (!hasError) {
+        document.getElementById("id-name").textContent = "Welcome to js learning " + fields[0].value + "!";
+    } else {
+        document.getElementById("id-name").textContent = "";
+    }
 }
 </script>
-
-
